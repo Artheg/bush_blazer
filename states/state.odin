@@ -1,10 +1,7 @@
 package states
 
+import config "../config"
 import rl "vendor:raylib"
-
-col_count :: 10
-row_count :: 10
-max_enemies :: 256
 
 GameState :: struct {
 	on_enter:    proc(),
@@ -23,9 +20,9 @@ GameStatus :: enum {
 GameModel :: struct {
 	hp:                 i32,
 	status:             GameStatus,
-	active_enemies:     [max_enemies]Enemy,
+	active_enemies:     [config.max_enemies]Enemy,
 	require_next_state: proc(status: GameStatus),
-	cells:              [col_count * row_count]Cell,
+	cells:              [config.col_count * config.row_count]Cell,
 }
 
 Enemy :: struct {
@@ -36,7 +33,19 @@ Enemy :: struct {
 	speed:    f32,
 }
 
+TreeStatus :: enum {
+	IDLE,
+	BURNING,
+	DEAD,
+}
+
+Tree :: struct {
+	hp:     int,
+	status: TreeStatus,
+}
+
 Cell :: struct {
-	x: int,
-	y: int,
+	x:    int,
+	y:    int,
+	tree: Maybe(^Tree),
 }
