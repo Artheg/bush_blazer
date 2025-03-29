@@ -42,11 +42,18 @@ Position :: struct {
 	col: int,
 }
 
+Direction :: enum {
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN,
+}
+
 Enemy :: struct {
-	position: Position,
-	is_alive: bool,
-	damage:   u8,
-	speed:    f32,
+	col:    int,
+	row:    int,
+	hp:     int,
+	damage: u8,
 }
 
 PlayerState :: enum {}
@@ -69,9 +76,11 @@ Tree :: struct {
 }
 
 Cell :: struct {
-	x:    i32,
-	y:    i32,
-	col:  int,
-	row:  int,
-	tree: Tree,
+	x:      i32,
+	y:      i32,
+	col:    int,
+	row:    int,
+	tree:   Tree,
+	enemy:  Maybe(^Enemy),
+	player: Maybe(^Player),
 }

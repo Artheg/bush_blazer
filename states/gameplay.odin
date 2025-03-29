@@ -66,6 +66,13 @@ gameplay := GameState {
 			}
 		}
 
+		for enemy in game_model.active_enemies {
+			if enemy.hp > 0 {
+				cell := game_model.cols[enemy.col][enemy.row]
+				rl.DrawCircle(cell.x, cell.y, 5, rl.BLUE)
+			}
+		}
+
 		// draw player
 		player := game_model.player
 		playerCell := game_model.cols[player.col][player.row]

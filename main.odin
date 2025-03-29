@@ -93,7 +93,7 @@ create_model :: proc() -> states.GameModel {
 		},
 	}
 
-	cell_index := 0
+	// cells with trees
 	for i := 0; i < config.col_count; i += 1 {
 		posX := i32(config.startX + i * config.cell_size)
 		for j := 0; j < config.row_count; j += 1 {
@@ -108,9 +108,20 @@ create_model :: proc() -> states.GameModel {
 					status = states.TreeStatus.IDLE,
 				},
 			}
-			cell_index += 1
 		}
 	}
-	return game_model
 	//
+
+	// enemies
+	for i := 0; i < config.start_enemies; i += 1 {
+		game_model.active_enemies[i] = states.Enemy {
+			col    = rand.int_max(config.col_count),
+			row    = rand.int_max(config.row_count),
+			damage = 1,
+			hp     = 100,
+		}
+	}
+
+
+	return game_model
 }

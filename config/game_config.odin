@@ -5,7 +5,10 @@ screen_height :: 720
 
 col_count :: 21
 row_count :: 13
+
+start_enemies :: 5
 max_enemies :: 256
+enemies_spawn_rate_seconds :: 1
 
 // cells
 cell_size :: 30
