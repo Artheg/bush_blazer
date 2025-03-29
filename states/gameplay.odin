@@ -50,22 +50,30 @@ gameplay := GameState {
 	render = proc(game_model: ^GameModel) {
 		for col in game_model.cols {
 			for cell in col {
-				rl.DrawRectangleLines(cell.x, cell.y, config.cell_size, config.cell_size, rl.WHITE)
+				rl.DrawRectangleLines(
+					cell.x - config.cell_size_half,
+					cell.y - config.cell_size_half,
+					config.cell_size,
+					config.cell_size,
+					rl.WHITE,
+				)
+				tree := cell.tree
+				if (tree.hp > 0) {
+					rl.DrawCircle(cell.x, cell.y, config.cell_size_third, rl.GREEN)
+					// rl.DrawCube(rl.Vector3{f32(cell.x), f32(cell.y), 0.0}, 100, 100, 100, rl.WHITE)
+
+				}
 			}
 		}
 
 		// draw player
 		player := game_model.player
 		playerCell := game_model.cols[player.col][player.row]
-		rl.DrawCircle(
-			playerCell.x + config.cell_size * 0.5,
-			playerCell.y + config.cell_size * 0.5,
-			5,
-			rl.RED,
-		)
+		rl.DrawCircle(playerCell.x, playerCell.y, 5, rl.RED)
 		//
 
 
+		rl.EndDrawing()
 	},
 	post_render = proc(game_model: ^GameModel) {},
 }

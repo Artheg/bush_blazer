@@ -73,5 +73,5 @@ Cell :: struct {
 	y:    i32,
 	col:  int,
 	row:  int,
-	tree: Maybe(^Tree),
+	tree: Tree,
 }
