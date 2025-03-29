@@ -6,24 +6,46 @@ import "core:fmt"
 import "core:strings"
 import rl "vendor:raylib"
 
+INITIAL_COOLDOWN :: 0.21
+
+movement_cooldown := INITIAL_COOLDOWN
+move_count := 0
 
 gameplay := GameState {
 	pre_render = proc(game_model: ^GameModel) {
-		player := &game_model.player
-		#partial switch (rl.GetKeyPressed()) {
-		case rl.KeyboardKey.LEFT:
-			player.col = max(player.col - 1, 0)
-			break
-		case rl.KeyboardKey.RIGHT:
-			player.col = min(player.col + 1, config.col_count - 1)
-			break
-		case rl.KeyboardKey.UP:
-			player.row = max(player.row - 1, 0)
-			break
-		case rl.KeyboardKey.DOWN:
-			player.row = min(player.row + 1, config.row_count - 1)
-			break
+
+		current_time := rl.GetTime()
+		if game_model.last_input_time != nil &&
+		   current_time - game_model.last_input_time.? < movement_cooldown {
+			return
 		}
+		game_model.last_input_time = current_time
+		if (move_count == 1) {
+			movement_cooldown = 0.11
+		}
+		player := &game_model.player
+		no_keys_pressed := false
+		if rl.IsKeyDown(rl.KeyboardKey.A) || rl.IsKeyDown(rl.KeyboardKey.LEFT) {
+			player.col = max(player.col - 1, 0)
+		} else if rl.IsKeyDown(rl.KeyboardKey.D) || rl.IsKeyDown(rl.KeyboardKey.RIGHT) {
+			player.col = min(player.col + 1, config.col_count - 1)
+		} else if rl.IsKeyDown(rl.KeyboardKey.W) || rl.IsKeyDown(rl.KeyboardKey.UP) {
+			player.row = max(player.row - 1, 0)
+		} else if rl.IsKeyDown(rl.KeyboardKey.S) || rl.IsKeyDown(rl.KeyboardKey.DOWN) {
+			player.row = min(player.row + 1, config.row_count - 1)
+		} else {
+			no_keys_pressed = true
+		}
+
+		if (no_keys_pressed) {
+			game_model.last_input_time = 0
+			move_count = 0
+			movement_cooldown = INITIAL_COOLDOWN
+		} else {
+			move_count += 1
+			rl.PlaySound(game_model.sounds.playerMove)
+		}
+
 	},
 	render = proc(game_model: ^GameModel) {
 		for col in game_model.cols {
@@ -32,6 +54,7 @@ gameplay := GameState {
 			}
 		}
 
+		// draw player
 		player := game_model.player
 		playerCell := game_model.cols[player.col][player.row]
 		rl.DrawCircle(
@@ -40,6 +63,7 @@ gameplay := GameState {
 			5,
 			rl.RED,
 		)
+		//
 
 
 	},

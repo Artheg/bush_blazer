@@ -29,10 +29,13 @@ main :: proc() {
 
 	rl.InitWindow(window.width, window.height, window.name)
 	rl.SetWindowMonitor(0)
+	rl.SetTargetFPS(60)
 	// rl.DisableCursor()
 
 
 	game_model := states.GameModel {
+		// TODO: move to resources
+		sounds = states.Sound{playerMove = rl.LoadSound("./resources/player_move.wav")},
 		status = states.GameStatus.MENU,
 		require_next_state = proc(status: states.GameStatus) {
 			switch (status) {

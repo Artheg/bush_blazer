@@ -17,12 +17,19 @@ GameStatus :: enum {
 	MENU,
 }
 
+
+Sound :: struct {
+	playerMove: rl.Sound,
+}
+
 GameModel :: struct {
 	status:             GameStatus,
 	active_enemies:     [config.max_enemies]Enemy,
 	require_next_state: proc(status: GameStatus),
 	cols:               [config.col_count][config.row_count]Cell,
 	player:             Player,
+	sounds:             Sound,
+	last_input_time:    Maybe(f64),
 }
 
 Position :: struct {
