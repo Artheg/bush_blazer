@@ -29,11 +29,10 @@ main :: proc() {
 
 	rl.InitWindow(window.width, window.height, window.name)
 	rl.SetWindowMonitor(0)
-	rl.DisableCursor()
+	// rl.DisableCursor()
 
 
 	game_model := states.GameModel {
-		hp = 100,
 		status = states.GameStatus.MENU,
 		require_next_state = proc(status: states.GameStatus) {
 			switch (status) {
@@ -47,12 +46,27 @@ main :: proc() {
 		},
 	}
 
+	cell_index := 0
+	for i := 0; i < config.col_count; i += 1 {
+		posX := i32(config.startX + i * config.cell_size)
+		for j := 0; j < config.row_count; j += 1 {
+			posY := i32(config.startY + j * config.cell_size)
+			game_model.cells[cell_index] = states.Cell {
+				x   = posX,
+				y   = posY,
+				col = i,
+				row = j,
+			}
+			cell_index += 1
+		}
+	}
+
 	for !rl.WindowShouldClose() {
 
 
-		if (!rl.IsWindowFocused()) {
-			rl.SetWindowFocused()
-		}
+		// if (!rl.IsWindowFocused()) {
+		// 	rl.SetWindowFocused()
+		// }
 
 		current_state.pre_render(&game_model)
 

@@ -18,19 +18,28 @@ GameStatus :: enum {
 }
 
 GameModel :: struct {
-	hp:                 i32,
 	status:             GameStatus,
 	active_enemies:     [config.max_enemies]Enemy,
 	require_next_state: proc(status: GameStatus),
 	cells:              [config.col_count * config.row_count]Cell,
 }
 
+Position :: struct {
+	row: int,
+	col: int,
+}
+
 Enemy :: struct {
-	value:    cstring,
-	position: rl.Vector2,
+	position: Position,
 	is_alive: bool,
 	damage:   u8,
 	speed:    f32,
+}
+
+PlayerState :: enum {}
+
+Player :: struct {
+	position: Position,
 }
 
 TreeStatus :: enum {
@@ -45,7 +54,9 @@ Tree :: struct {
 }
 
 Cell :: struct {
-	x:    int,
-	y:    int,
+	x:    i32,
+	y:    i32,
+	col:  int,
+	row:  int,
 	tree: Maybe(^Tree),
 }
