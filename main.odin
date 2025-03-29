@@ -44,6 +44,7 @@ main :: proc() {
 				current_state = states.game_over
 			}
 		},
+		player = states.Player{hp = 100},
 	}
 
 	cell_index := 0
@@ -51,7 +52,7 @@ main :: proc() {
 		posX := i32(config.startX + i * config.cell_size)
 		for j := 0; j < config.row_count; j += 1 {
 			posY := i32(config.startY + j * config.cell_size)
-			game_model.cells[cell_index] = states.Cell {
+			game_model.cols[i][j] = states.Cell {
 				x   = posX,
 				y   = posY,
 				col = i,

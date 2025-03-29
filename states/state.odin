@@ -21,7 +21,8 @@ GameModel :: struct {
 	status:             GameStatus,
 	active_enemies:     [config.max_enemies]Enemy,
 	require_next_state: proc(status: GameStatus),
-	cells:              [config.col_count * config.row_count]Cell,
+	cols:               [config.col_count][config.row_count]Cell,
+	player:             Player,
 }
 
 Position :: struct {
@@ -39,7 +40,9 @@ Enemy :: struct {
 PlayerState :: enum {}
 
 Player :: struct {
-	position: Position,
+	hp:  int,
+	col: int,
+	row: int,
 }
 
 TreeStatus :: enum {
