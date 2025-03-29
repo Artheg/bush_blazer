@@ -22,6 +22,10 @@ Sound :: struct {
 	playerMove: rl.Sound,
 }
 
+Music :: struct {
+	gameplay: rl.Music,
+}
+
 GameModel :: struct {
 	status:             GameStatus,
 	active_enemies:     [config.max_enemies]Enemy,
@@ -29,6 +33,7 @@ GameModel :: struct {
 	cols:               [config.col_count][config.row_count]Cell,
 	player:             Player,
 	sounds:             Sound,
+	music:              Music,
 	last_input_time:    Maybe(f64),
 }
 

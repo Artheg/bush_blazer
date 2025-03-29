@@ -13,6 +13,7 @@ Window :: struct {
 }
 
 current_state := states.main_menu
+current_music: Maybe(rl.Music)
 
 main :: proc() {
 
@@ -36,6 +37,7 @@ main :: proc() {
 	game_model := states.GameModel {
 		// TODO: move to resources
 		sounds = states.Sound{playerMove = rl.LoadSound("./resources/player_move.wav")},
+		//
 		status = states.GameStatus.MENU,
 		require_next_state = proc(status: states.GameStatus) {
 			switch (status) {
@@ -43,6 +45,8 @@ main :: proc() {
 				current_state = states.main_menu
 			case states.GameStatus.PLAYING:
 				current_state = states.gameplay
+				current_music = rl.LoadMusicStream("./resources/music.mp3")
+				rl.PlayMusicStream(current_music.?)
 			case states.GameStatus.GAME_OVER:
 				current_state = states.game_over
 			}
@@ -67,6 +71,9 @@ main :: proc() {
 
 	for !rl.WindowShouldClose() {
 
+		if (current_music != nil) {
+			rl.UpdateMusicStream(current_music.?)
+		}
 
 		// if (!rl.IsWindowFocused()) {
 		// 	rl.SetWindowFocused()
